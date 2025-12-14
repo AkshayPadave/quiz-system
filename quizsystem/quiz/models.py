@@ -12,9 +12,9 @@ A few questions of various types (MCQ, True/False, text, etc.)
 
 
 QUESTION_TYPES = [
-        ('MCQ', 'Multiple Choice Question'),
-        ('TF', 'True/False'),
-        ('TEXT', 'Text Answer'),
+        ('mcq', 'Multiple Choice'),
+        ('tf', 'True/False'),
+        ('text', 'Text Answer'),
     ]
 
 # Creating Quiz model
@@ -38,7 +38,7 @@ class Question(models.Model):
 
 # Creating Choice model for MCQ type questions
 class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices')
     text = models.CharField(max_length=200)
     is_correct = models.BooleanField(default=False)
 
@@ -49,7 +49,7 @@ class Choice(models.Model):
 # Creating Answer model to store answers
 class QuizResult(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    score = models.FloatField()
+    score = models.IntegerField()
     submitted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

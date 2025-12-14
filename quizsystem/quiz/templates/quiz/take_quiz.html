@@ -1,0 +1,32 @@
+<!-- {"quiz": quiz, "questions": all_questions} -->
+
+<h1>{{ quiz.title }}</h1>
+<form method="POST" action="{% url 'submit_quiz' quiz.id %}">
+    {% csrf_token %}
+    {% for question in questions %}
+            <h3>Question {{ forloop.counter }}: {{ question.text }}</h3>
+            {% if question.question_type == 'mcq' %}
+                {% for choice in question.choices.all %}
+                    <label>
+                        <input type="radio" name="{{ question.id }}" value="{{ choice.text }}">
+                        {{ choice.text }}
+                    </label>
+                    <br>
+                {% endfor %}
+            {% elif question.question_type == 'tf' %}
+                <label>
+                    <input type="radio" name="{{ question.id }}" value="True">
+                    True
+                </label>
+                <br>
+                <label>
+                    <input type="radio" name="{{ question.id }}" value="False">
+                    False
+                </label>
+                <br>
+            {% else %}
+                <input type="text" name="{{ question.id }}" rows="4" cols="50"/>
+            {% endif %}
+    {% endfor %}
+    <button type="submit">Submit Quiz</button>
+</form>
